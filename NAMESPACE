@@ -1,0 +1,6 @@
+S3method(computeActivityIndex,GT3XPlus)
+S3method(computeActivityIndex,default)
+export(computeActivityIndex)
+export(ReadGT3XPlus)
+export(ReadTable)
+export(Sigma0)
