@@ -11,8 +11,8 @@ The AI is a way of summarizing densely sampled accelerometry data into given epo
 
 ## Package Installation
 
-GSCA software can be installed via GitHub.
-Users should have R installed on their computer before installing GSCA. R can be downloaded at http://www.r-project.org/.
+ActivityIndex software can be installed via GitHub.
+Users should have R (http://www.r-project.org/) installed on their computer before installing ActivityIndex.
 
 ### Install devtools package
 To install ActivityIndex package via GitHub, the user must have installed [devtools](https://cran.r-project.org/web/packages/devtools/index.html), which could be completed by using the following R command
