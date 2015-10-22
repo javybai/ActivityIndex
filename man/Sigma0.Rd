@@ -15,7 +15,7 @@ data will be used to calculate \eqn{\bar{\sigma}_i}.}
 \item{\code{hertz}}{The sample rate of the data.}
 }
 \value{
-\eqn{\bar{\sigma}_i}.
+\eqn{\bar{\sigma}_i}, a numeric vector of length one.
 }
 \description{
 \code{Sigma0} computes \eqn{\bar{\sigma}_i}, which is needed for

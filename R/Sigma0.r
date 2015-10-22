@@ -6,7 +6,7 @@
 #'  number. The 2nd to 4th columns contain the tri-axial raw acceleration. The 
 #'  data will be used to calculate \eqn{\bar{\sigma}_i}.
 #' @param \code{hertz} The sample rate of the data.
-#' @return \eqn{\bar{\sigma}_i}.
+#' @return \eqn{\bar{\sigma}_i}, a numeric vector of length one.
 #' @export
 
 Sigma0=function(x,hertz=30)

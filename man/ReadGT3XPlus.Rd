@@ -11,7 +11,7 @@ ReadGT3XPlus(filename)
 }
 \value{
 The \code{ReadGT3XPlus} returns an object of \link{class} "\code{GT3XPlus}".
-This class of object is supported by functions \code{\link{ActivityIndex}}.
+This class of object is supported by functions \code{\link{computeActivityIndex}}.
 A object of class "\code{GT3XPlus}" is a list containing at least the following components:
 
  \code{SN}: Serial Number of the accelerometer

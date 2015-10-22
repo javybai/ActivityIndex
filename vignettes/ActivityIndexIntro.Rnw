@@ -1,0 +1,181 @@
+%\VignetteIndexEntry{Introduction to using ActivityIndex package}
+%\VignetteDepends{ActivityIndex}
+%\VignetteKeywords{ActivityIndex}
+%\VignettePackage{ActivityIndex}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{graphicx,amsmath,enumerate, amssymb, multirow, anysize, booktabs, threeparttable, amsfonts, bbm}
+\usepackage{setspace,listings,dsfont}
+%\usepackage{cite}
+\usepackage{natbib}
+\usepackage{fancyhdr}
+\usepackage{setspace,float,lscape,subfigure,amsmath,multirow,color}
+\usepackage[font=small,format=hang,labelfont=bf,up,textfont=it,up]{caption}
+\usepackage[pdftex,bookmarks=true]{hyperref}
+\usepackage{wrapfig}
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\code}[1]{\mbox{\texttt{#1}}}
+% Page style definition
+\geometry{margin=0.75in}
+\pagestyle{fancy}
+% Customize this to your liking.
+\setlength{\headheight}{14.5pt}
+\lhead{Introduction to AI}\chead{}\rhead{Jiawei Bai}\lfoot{}
+\cfoot{\thepage}\rfoot{}
+
+
+<<"setup",echo=FALSE,cache=FALSE,warning=FALSE,message=FALSE>>=
+library(ActivityIndex)
+library(knitr)
+options(width=52,scipen=1,digits=5)
+opts_chunk$set(tidy=TRUE)
+@
+
+
+\begin{document}
+
+
+%\begin{titlepage}
+\title{Introduction to the \pkg{ActivityIndex} package in \proglang{R}}
+\date{\textit{Created}: October 15, 2015; \quad \textit{Revised}: \today}
+%\author{Jiawei Bai}
+\maketitle
+% \end{titlepage}
+
+\onehalfspace
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    Main Text  %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The \pkg{ActivityIndex} package contains functions to 1) read raw accelerometry data and 2) compute ``Activity Index'' (AI) using the raw data. This introduction provides step-by-step instructions on how to read data from \code{.csv} files and then compute AI. 
+
+\section{Data description}
+
+The sample data were collected by accelerometer GT3X+ (ActiGraph, ), downloaded from \url{https://help.theactigraph.com/entries/21688392-GT3X-ActiSleep-Sample-Data}. The data are available in the \pkg{ActivityIndex} package and their paths can be acquired using command:
+<<"AccessCSV",echo=TRUE,eval=FALSE>>=
+system.file("extdata","sample_GT3X+.csv",package="ActivityIndex")
+system.file("extdata","sample_table.csv",package="ActivityIndex")
+@
+
+\code{sample\_GT3X+.csv} is the standard output of GT3X+ accelerometer, with a $10$-line header containing the basic information of the data collection, followed by $3$-column raw acceleration data. \code{sample\_table.csv} contains the same $3$-column acceleration data without the $10$-line header. The first $15$ lines of \code{sample\_GT3X+.csv} are shown below:
+<<"GT3X+_CSV",echo=FALSE,eval=TRUE>>=
+cat(readLines(system.file("extdata","sample_GT3X+.csv",package="ActivityIndex"),n=15),sep="\n")
+@
+while the first $5$ lines of \code{sample\_table.csv} are 
+<<"Table_CSV",echo=FALSE,eval=TRUE>>=
+cat(readLines(system.file("extdata","sample_table.csv",
+package="ActivityIndex"),n=5),sep="\n")
+@
+Users should follow the same format while preparing their own data.
+
+\section{Read the data}
+\code{ReadGT3XPlus} and \code{ReadTable} functions read the GT3X+ \code{.csv} file and the $3$-column acceleration table, respectively. To read the data, use the following code
+
+<<"ReadData",echo=TRUE,cache=TRUE,warning=FALSE,message=FALSE>>=
+sampleGT3XPlus=ReadGT3XPlus(system.file("extdata","sample_GT3X+.csv",package="ActivityIndex"))
+sampleTable=ReadTable(system.file("extdata", "sample_table.csv",package="ActivityIndex"))
+@
+
+Now that object \code{sampleGT3XPlus} has class \code{GT3XPlus}, which contains  the raw data and header information. Function \code{ReadGT3XPlus} automatically applies time stamps to the acceleration time series using the information from the header. For example, our sample data look like this
+
+<<"str_sampleGT3XPlus",echo=TRUE,eval=TRUE>>=
+str(sampleGT3XPlus)
+@
+
+However, \code{sampleTable} is much simpler, since limited information was given. The first $6$ lines of it look like this
+
+<<"head_sampleTable",echo=TRUE,eval=TRUE>>=
+head(sampleTable,n=6)
+@
+
+\section{Compute AI}
+AI is a metric to reflect the variability of the raw acceleration signals after removing systematic noise of the signals. Formally, its definition (a one-second AI) is
+\begin{equation}
+\text{AI}^{\text{new}}_i(t;H)=\sqrt{\max\left(\frac{1}{3}\left\{\sum_{m=1}^{3}{\frac{\sigma^2_{im}(t;H)-\bar{\sigma}^2_{i}}{\bar{\sigma}^2_{i}}}\right\},0\right)},\label{EQ: AI}
+\end{equation}
+where $\sigma^2_{im}(t;H)$ ($m=1,2,3$) is axis-$m$'s moving variance during the window starting from time $t$ (of size $H$), and  $\bar{\sigma}_i$ is the systematic noise of the signal when the device is placed steady.
+
+Function \code{computeActivityIndex} is used to compute AI. The syntax of the function is
+
+<<"computeAI_syntax",echo=TRUE,eval=FALSE>>=
+computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
+@
+
+\code{x} is the data used to compute AI. It can either be a \code{GT3XPlus} object, or a $4$-column data frame (tri-axial acceleration time series with an index column). Either \code{x\_sigma0} or \code{sigma0} are used to determine the systematic noise $\bar{\sigma}_i$. More detailed example will follow to illustrate how to use them. \code{epoch} is the epoch length (in second) of the AI. For example, the default \code{epoch=1} yields to $1$-second AI, while minute-by-minute AI is given by \code{epoch=60}. \code{hertz} specifies the sample rate (in Hertz), which is usually $10$, $30$ or $80$, etc.
+
+We will continue our example of computing AI using our data \code{sampleGT3XPlus} and \code{sampleTable}.
+
+\subsection{Find $\bar{\sigma}_i$ on-the-fly}
+According to the definition of the systematic noise $\bar{\sigma}_i$, it changes with subject $i$. Therefore, strictly speaking, we are to compute $\bar{\sigma}_i$ every time we compute AI for a new subject $i$. Argument \code{x\_sigma0} can be used to specify a $4$-column data frame (one column for indices and three columns for accceleration) which is used to calculate $\bar{\sigma}_i$. The $4$-column data frame should contain the raw accelerometry data collected while the accelerometer is not worn or kept steady. For example,  if we say a segment of our sample data (\code{sampleTable[1004700:1005600,]}) meets such requirement, we could compute AI using the following code
+
+<<"computeAI_onthefly",echo=TRUE,eval=TRUE>>=
+AI_sampleTable_x=computeActivityIndex(sampleTable, x_sigma0=sampleTable[1004700:1005600,], epoch=1, hertz=30)
+AI_sampleGT3XPlus_x=computeActivityIndex(sampleGT3XPlus, x_sigma0=sampleTable[1004700:1005600,], epoch=1, hertz=30)
+@
+
+\subsection{Find $\bar{\sigma}_i$ beforehand}
+Sometimes we do not want to calculate $\bar{\sigma}_i$ whenever computing AI. For example, if $10$ accelerometers were used to collect data over $100$ subjects, there is no reason to calculate $\bar{\sigma}_i$ for $100$ times. One $\bar{\sigma}_i$ is only needed for one accelerometer. Furthermore, if we could verify the $\bar{\sigma}_i$'s of the $10$ accelerometers are close to each others, we could combine them into a single $\bar{\sigma}=\sum_{i=1}^{10}{\bar{\sigma}_i}/10$. In this case, $\bar{\sigma}$ will be used for all subjects in that study, which is crucial for fast processing of data collected by large studies.
+
+This can be achieved by using the argument \code{x\_sigma0} to specify a pre-determined $\bar{\sigma}_i$. Still using the same segment of data (\code{sampleTable[1004700:1005600,]}) as an example, we calculate a \code{sample\_sigma0} beforehand with code
+
+<<"compute_sigma0",echo=TRUE,eval=TRUE>>=
+sample_sigma0=Sigma0(sampleTable[1004700:1005600,],hertz=30)
+@
+
+Then we could use this \code{sample\_sigma0=$\Sexpr{sample_sigma0}$} to compute AI with code
+
+<<"computeAI_beforehand",echo=TRUE,eval=TRUE>>=
+AI_sampleTable=computeActivityIndex(sampleTable, sigma0=sample_sigma0, epoch=1, hertz=30)
+AI_sampleGT3XPlus=computeActivityIndex(sampleGT3XPlus, sigma0=sample_sigma0, epoch=1, hertz=30)
+@
+
+\section{Explore AI}
+Using either method to compute AI yield to the same result. The output of function \code{computeActivityIndex} has two columns: \code{RecordNo} saves the indices and \code{AI} stores AI. The first $10$ lines of \code{AI\_sampleGT3XPlus} is as follow
+
+<<"head_AI",echo=TRUE,eval=TRUE>>=
+head(AI_sampleGT3XPlus,n=10)
+@
+
+We could also compute AI in different epoch. Say we want minute-by-minute AI, then we could use the following code
+
+<<"computeAI_minute",echo=TRUE,eval=TRUE>>=
+AI_sampleTable_min=computeActivityIndex(sampleTable, sigma0=sample_sigma0, epoch=60, hertz=30)
+AI_sampleGT3XPlus_min=computeActivityIndex(sampleGT3XPlus, sigma0=sample_sigma0, epoch=60, hertz=30)
+@
+
+And according to the definition of AI, the minute-by-minute AI's are simply the sum of all 1-second AI within each minute. The AI during the first $6$ minutes are 
+<<"head_AI_min",echo=TRUE,eval=TRUE>>=
+head(AI_sampleGT3XPlus_min)
+@
+
+%\begin{figure}
+%\begin{center}
+%<<"Fig_AI",dev="png",fig.width=7.5, fig.height=4,dpi=72,echo=TRUE,cache=TRUE,warning=FALSE>>=
+%Grid=120
+%Color_Axis=c("aquamarine4","darkorchid4","brown3")
+%op=par(mai=c(1, .8, .3, .1))
+%layout(matrix(c(1,2),nrow=2))
+%#
+%plot(sampleGT3XPlus$Raw$X,ylim=c(-6,6),type="n",lwd=2,col=Color_Axis[1],xaxt="n")
+%#abline(v=sampleGT3XPlus$Raw[match(TimeScale[(0:(86399%/%Grid))*Grid+1],Time),which=TRUE])
+%points(sampleGT3XPlus$Raw$X,type="l",lwd=2,col=Color_Axis[1])
+%points(sampleGT3XPlus$Raw$Y,type="l",lwd=2,col=Color_Axis[2])
+%points(sampleGT3XPlus$Raw$Z,type="l",lwd=2,col=Color_Axis[3])
+%axis(side=1,at=sampleGT3XPlus$Raw[match(TimeScale[(0:(86399%/%Grid))*Grid+1],Time),which=TRUE],
+%     label=sampleGT3XPlus$Raw[match(TimeScale[(0:(86399%/%Grid))*Grid+1],Time),Time])
+%#
+%plot(AI_sampleGT3XPlus[,2],ylim=c(0,400),type="n",lwd=2,xaxt="n")
+%#abline(v=match(TimeScale[(0:(86399%/%Grid))*Grid+1],AI_sampleGT3XPlus$RecordNo))
+%points(AI_sampleGT3XPlus[,2],type="h",lwd=2,col=rgb(1,0,0,1))
+%axis(side=1,at=match(TimeScale[(0:(86399%/%Grid))*Grid+1],AI_sampleGT3XPlus$RecordNo),
+%     label=AI_sampleGT3XPlus$RecordNo[match(TimeScale[(0:(86399%/%Grid))*Grid+1],AI_sampleGT3XPlus$RecordNo)])
+%@
+%\caption{Time series plot of the raw data and the AI.}
+%\label{fig:AI}
+%\end{center}
+%\end{figure}
+
+\end{document}
