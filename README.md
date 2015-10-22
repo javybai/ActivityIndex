@@ -27,7 +27,11 @@ devtools::install_github("javybai/ActivityIndex")
 ```
 
 ## ActivityIndex User Manual
-The ActivityIndex package includes a vignette to demonstrate a typical work flow of computing AI. The vignette can either be accessed by R command `r browseVignettes(package="ActivityIndex")` or via GitHub at https://github.com/javybai/ActivityIndex/blob/master/inst/doc/ActivityIndexIntro.pdf.
+The ActivityIndex package includes a vignette to demonstrate a typical work flow of computing AI. The vignette can either be accessed by R command
+```{r }
+browseVignettes(package="ActivityIndex")
+```
+or via GitHub at https://github.com/javybai/ActivityIndex/blob/master/inst/doc/ActivityIndexIntro.pdf.
 
 
 ## Further Questions
