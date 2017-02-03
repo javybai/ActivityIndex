@@ -57,6 +57,7 @@ ReadGT3XPlus=function(filename)
   result$StartDate=as.character(as.Date(result$StartDate,format="%m/%d/%Y"))
   result$DownloadTime=regmatches(result_Head[6],regexpr("(?<=Download\\sTime\\s)(.+)(?=\\Z)",result_Head[6],perl=TRUE))
   result$DownloadDate=regmatches(result_Head[7],regexpr("(?<=Download\\sDate\\s)(.+)(?=\\Z)",result_Head[7],perl=TRUE))  
+  result$DownloadDate=as.character(as.Date(result$DownloadDate,format="%m/%d/%Y"))
   ### Data ###
   result$Raw=read.csv(file=filename,skip=10,stringsAsFactors=FALSE,header=FALSE,nrows=1)
   if (is.character(result$Raw[,1])==TRUE)
@@ -104,7 +105,13 @@ ReadGT3XPlus=function(filename)
   {
     date_idx_start=which(result$Raw$Time=="00:00:00")[(1:(length(which(result$Raw$Time=="00:00:00"))%/%result$Hertz)-1)*result$Hertz+1]
     date_idx_end=c(date_idx_start[-1]-1,nrow(result$Raw))
-    date_follow=as.character(as.Date(result$StartDate)+1:length(date_idx_start))
+    if (date_idx_start[1]==1)
+    {
+      date_follow=as.character(as.Date(result$StartDate)+1:length(date_idx_start)-1)
+    } else
+    {
+      date_follow=as.character(as.Date(result$StartDate)+1:length(date_idx_start))
+    }
     for (i in 1:length(date_idx_start))
     {
       result$Raw$Date[date_idx_start[i]:date_idx_end[i]]=rep(date_follow[i],length(date_idx_start[i]:date_idx_end[i]))
