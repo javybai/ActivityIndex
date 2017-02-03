@@ -1,15 +1,17 @@
 Package: ActivityIndex
 Type: Package
-Title: Activity Index calculation using raw accelerometry data
-Version: 0.3
-Date: 2015-10-21
+Title: Activity Index Calculation using Raw Accelerometry Data
+Version: 0.3.2
+Date: 2017-2-3
 Author: Jiawei Bai
 Maintainer: Jiawei Bai <jbai@jhsph.edu>
 Description: This package contains functions to read raw accelerometry data and to calculate Activity Index based on the data.
 License: GPL-3
 Depends: 
     matrixStats, data.table
-Suggests: knitr
+Suggests:
+    knitr
 LazyData: true
 LazyLoad: true
 VignetteBuilder: knitr
+RoxygenNote: 6.0.0
