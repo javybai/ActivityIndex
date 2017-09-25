@@ -1,7 +1,7 @@
 Package: ActivityIndex
 Type: Package
 Title: Activity Index Calculation using Raw Accelerometry Data
-Version: 0.3.2
+Version: 0.3.3
 Date: 2017-2-3
 Author: Jiawei Bai
 Maintainer: Jiawei Bai <jbai@jhsph.edu>
