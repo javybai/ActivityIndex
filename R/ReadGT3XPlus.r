@@ -64,15 +64,17 @@ ReadGT3XPlus=function(filename)
   {
     row1=read.csv(file=filename,skip=11,stringsAsFactors=FALSE,header=FALSE,nrows=1)
     result$Raw=fread(filename,skip=11,sep=",",stringsAsFactors=FALSE,
-                     colClasses=rep("numeric",ncol(row1)),header=FALSE,
+                     colClasses=rep("numeric",ncol(row1)),header=FALSE,fill=TRUE,
                      showProgress=FALSE)
   } else
   {
     row1=read.csv(file=filename,skip=10,stringsAsFactors=FALSE,header=FALSE,nrows=1)
     result$Raw=fread(filename,skip=10,sep=",",stringsAsFactors=FALSE,
-                     colClasses=rep("numeric",ncol(row1)),header=FALSE,
+                     colClasses=rep("numeric",ncol(row1)),header=FALSE,fill=TRUE,
                      showProgress=FALSE)
   }
+  # Remove incomplete row
+  if (any(is.na(result$Raw[nrow(result$Raw),]))) result$Raw=result$Raw[-nrow(result$Raw),]
   # Time Stamp #
   if (as.numeric(substr(result$Epoch,7,8))<=1)
   {
