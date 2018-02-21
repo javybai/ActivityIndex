@@ -1,0 +1,21 @@
+structure(list(bai2016activity = structure(list(title = "An activity index for raw accelerometry data and its comparison with other activity metrics", 
+    author = structure(list(structure(list(given = "Jiawei", 
+        family = "Bai", role = NULL, email = NULL, comment = NULL), .Names = c("given", 
+    "family", "role", "email", "comment")), structure(list(given = "Chongzhi", 
+        family = "Di", role = NULL, email = NULL, comment = NULL), .Names = c("given", 
+    "family", "role", "email", "comment")), structure(list(given = "Luo", 
+        family = "Xiao", role = NULL, email = NULL, comment = NULL), .Names = c("given", 
+    "family", "role", "email", "comment")), structure(list(given = c("Kelly", 
+    "R"), family = "Evenson", role = NULL, email = NULL, comment = NULL), .Names = c("given", 
+    "family", "role", "email", "comment")), structure(list(given = c("Andrea", 
+    "Z"), family = "LaCroix", role = NULL, email = NULL, comment = NULL), .Names = c("given", 
+    "family", "role", "email", "comment")), structure(list(given = c("Ciprian", 
+    "M"), family = "Crainiceanu", role = NULL, email = NULL, 
+        comment = NULL), .Names = c("given", "family", "role", 
+    "email", "comment")), structure(list(given = c("David", "M"
+    ), family = "Buchner", role = NULL, email = NULL, comment = NULL), .Names = c("given", 
+    "family", "role", "email", "comment"))), class = "person"), 
+    journal = "PloS one", volume = "11", number = "8", pages = "e0160644", 
+    year = "2016", publisher = "Public Library of Science"), .Names = c("title", 
+"author", "journal", "volume", "number", "pages", "year", "publisher"
+), bibtype = "Article", key = "bai2016activity")), class = "bibentry", strings = structure(character(0), .Names = character(0)), .Names = "bai2016activity")
