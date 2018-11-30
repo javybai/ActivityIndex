@@ -8,4 +8,3 @@
 A vector of length 86400 containing the time scale characters from 00:00:00 
 to 23:59:59.
 }
-

@@ -50,33 +50,40 @@ opts_chunk$set(tidy=TRUE)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%    Main Text  %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The \pkg{ActivityIndex} package contains functions to 1) read raw accelerometry data and 2) compute ``Activity Index'' (AI) using the raw data. This introduction provides step-by-step instructions on how to read data from \code{.csv} files and then compute AI. 
+The \pkg{ActivityIndex} package contains functions to 1) read raw accelerometry data and 2) compute ``Activity Index'' (AI) using the raw data. This introduction provides step-by-step instructions on how to read data from \code{.csv} files and then compute AI.
 
 \section{Data description}
 
 The sample data were collected by accelerometer GT3X+ (ActiGraph, ), downloaded from \url{https://help.theactigraph.com/entries/21688392-GT3X-ActiSleep-Sample-Data}. The data are available in the \pkg{ActivityIndex} package and their paths can be acquired using command:
 <<"AccessCSV",echo=TRUE,eval=FALSE>>=
-system.file("extdata","sample_GT3X+.csv",package="ActivityIndex")
-system.file("extdata","sample_table.csv",package="ActivityIndex")
+system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex")
+system.file("extdata","sample_table.csv.gz",package="ActivityIndex")
 @
 
-\code{sample\_GT3X+.csv} is the standard output of GT3X+ accelerometer, with a $10$-line header containing the basic information of the data collection, followed by $3$-column raw acceleration data. \code{sample\_table.csv} contains the same $3$-column acceleration data without the $10$-line header. The first $15$ lines of \code{sample\_GT3X+.csv} are shown below:
+\code{sample\_GT3X+.csv.gz} is the standard output of GT3X+ accelerometer, with a $10$-line header containing the basic information of the data collection, followed by $3$-column raw acceleration data. \code{sample\_table.csv.gz} contains the same $3$-column acceleration data without the $10$-line header. The first $15$ lines of \code{sample\_GT3X+.csv.gz} are shown below:
 <<"GT3X+_CSV",echo=FALSE,eval=TRUE>>=
-cat(readLines(system.file("extdata","sample_GT3X+.csv",package="ActivityIndex"),n=15),sep="\n")
+fname = system.file("extdata", "sample_GT3X+.csv.gz", package = "ActivityIndex")
+unzipped = R.utils::gunzip(fname, temporary = TRUE, remove = FALSE,
+                           overwrite = TRUE)
+cat(readLines(unzipped, n = 15), sep = "\n")
 @
-while the first $5$ lines of \code{sample\_table.csv} are 
+while the first $5$ lines of \code{sample\_table.csv.gz} are
 <<"Table_CSV",echo=FALSE,eval=TRUE>>=
-cat(readLines(system.file("extdata","sample_table.csv",
-package="ActivityIndex"),n=5),sep="\n")
+fname = system.file("extdata", "sample_table.csv.gz", package = "ActivityIndex")
+unzipped = R.utils::gunzip(fname,
+                           temporary = TRUE,
+                           remove = FALSE,
+                           overwrite = TRUE)
+cat(readLines(unzipped, n = 5), sep = "\n")
 @
 Users should follow the same format while preparing their own data.
 
 \section{Read the data}
-\code{ReadGT3XPlus} and \code{ReadTable} functions read the GT3X+ \code{.csv} file and the $3$-column acceleration table, respectively. To read the data, use the following code
+\code{ReadGT3XPlus} and \code{ReadTable} functions read the GT3X+ \code{.csv.gz} file and the $3$-column acceleration table, respectively. To read the data, use the following code
 
 <<"ReadData",echo=TRUE,cache=TRUE,warning=FALSE,message=FALSE>>=
-sampleGT3XPlus=ReadGT3XPlus(system.file("extdata","sample_GT3X+.csv",package="ActivityIndex"))
-sampleTable=ReadTable(system.file("extdata", "sample_table.csv",package="ActivityIndex"))
+sampleGT3XPlus=ReadGT3XPlus(system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex"))
+sampleTable=ReadTable(system.file("extdata", "sample_table.csv.gz",package="ActivityIndex"))
 @
 
 Now that object \code{sampleGT3XPlus} has class \code{GT3XPlus}, which contains  the raw data and header information. Function \code{ReadGT3XPlus} automatically applies time stamps to the acceleration time series using the information from the header. For example, our sample data look like this
@@ -109,7 +116,7 @@ computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 We will continue our example of computing AI using our data \code{sampleGT3XPlus} and \code{sampleTable}.
 
 \subsection{Find $\bar{\sigma}_i$ on-the-fly}
-According to the definition of the systematic noise $\bar{\sigma}_i$, it changes with subject $i$. Therefore, strictly speaking, we are to compute $\bar{\sigma}_i$ every time we compute AI for a new subject $i$. Argument \code{x\_sigma0} can be used to specify a $4$-column data frame (one column for indices and three columns for accceleration) which is used to calculate $\bar{\sigma}_i$. The $4$-column data frame should contain the raw accelerometry data collected while the accelerometer is not worn or kept steady. For example,  if we say a segment of our sample data (\code{sampleTable[1004700:1005600,]}) meets such requirement, we could compute AI using the following code
+According to the definition of the systematic noise $\bar{\sigma}_i$, it changes with subject $i$. Therefore, strictly speaking, we are to compute $\bar{\sigma}_i$ every time we compute AI for a new subject $i$. Argument \code{x\_sigma0} can be used to specify a $4$-column data frame (one column for indices and three columns for acceleration) which is used to calculate $\bar{\sigma}_i$. The $4$-column data frame should contain the raw accelerometry data collected while the accelerometer is not worn or kept steady. For example,  if we say a segment of our sample data (\code{sampleTable[1004700:1005600,]}) meets such requirement, we could compute AI using the following code
 
 <<"computeAI_onthefly",echo=TRUE,eval=TRUE>>=
 AI_sampleTable_x=computeActivityIndex(sampleTable, x_sigma0=sampleTable[1004700:1005600,], epoch=1, hertz=30)
@@ -146,7 +153,7 @@ AI_sampleTable_min=computeActivityIndex(sampleTable, sigma0=sample_sigma0, epoch
 AI_sampleGT3XPlus_min=computeActivityIndex(sampleGT3XPlus, sigma0=sample_sigma0, epoch=60, hertz=30)
 @
 
-And according to the definition of AI, the minute-by-minute AI's are simply the sum of all 1-second AI within each minute. The AI during the first $6$ minutes are 
+And according to the definition of AI, the minute-by-minute AI's are simply the sum of all 1-second AI within each minute. The AI during the first $6$ minutes are
 <<"head_AI_min",echo=TRUE,eval=TRUE>>=
 head(AI_sampleGT3XPlus_min)
 @
