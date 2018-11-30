@@ -25,7 +25,8 @@ Imports:
     R.utils
 Suggests:
     knitr,
-    testthat
+    testthat,
+    rmarkdown
 LazyData: true
 LazyLoad: true
 VignetteBuilder: knitr
