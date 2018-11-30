@@ -116,7 +116,7 @@ computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 We will continue our example of computing AI using our data \code{sampleGT3XPlus} and \code{sampleTable}.
 
 \subsection{Find $\bar{\sigma}_i$ on-the-fly}
-According to the definition of the systematic noise $\bar{\sigma}_i$, it changes with subject $i$. Therefore, strictly speaking, we are to compute $\bar{\sigma}_i$ every time we compute AI for a new subject $i$. Argument \code{x\_sigma0} can be used to specify a $4$-column data frame (one column for indices and three columns for accceleration) which is used to calculate $\bar{\sigma}_i$. The $4$-column data frame should contain the raw accelerometry data collected while the accelerometer is not worn or kept steady. For example,  if we say a segment of our sample data (\code{sampleTable[1004700:1005600,]}) meets such requirement, we could compute AI using the following code
+According to the definition of the systematic noise $\bar{\sigma}_i$, it changes with subject $i$. Therefore, strictly speaking, we are to compute $\bar{\sigma}_i$ every time we compute AI for a new subject $i$. Argument \code{x\_sigma0} can be used to specify a $4$-column data frame (one column for indices and three columns for acceleration) which is used to calculate $\bar{\sigma}_i$. The $4$-column data frame should contain the raw accelerometry data collected while the accelerometer is not worn or kept steady. For example,  if we say a segment of our sample data (\code{sampleTable[1004700:1005600,]}) meets such requirement, we could compute AI using the following code
 
 <<"computeAI_onthefly",echo=TRUE,eval=TRUE>>=
 AI_sampleTable_x=computeActivityIndex(sampleTable, x_sigma0=sampleTable[1004700:1005600,], epoch=1, hertz=30)
