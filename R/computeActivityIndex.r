@@ -3,18 +3,18 @@
 #' accelerometry data, based on user specified parameters such as sample rate
 #' and epoch length.
 #'
-#' @param \code{x} An object containing raw accelerometry data, which could
+#' @param x An object containing raw accelerometry data, which could
 #' either be a 4-column data frame or "\code{GT3XPlus}" object. See "Details".
-#' @param \code{x_sigma0} A 4-column data frame containing the raw accelerometry
+#' @param x_sigma0 A 4-column data frame containing the raw accelerometry
 #'  data when the device is not worn. The 1st column has the record/index
 #'  number. The 2nd to 4th columns contain the tri-axial raw acceleration. The
 #'  data will be used to calculate \eqn{\bar{\sigma}_i}.
-#' @param \code{sigma0} Specify \eqn{\bar{\sigma}_i} directly. At least one of
+#' @param sigma0 Specify \eqn{\bar{\sigma}_i} directly. At least one of
 #' \code{x_sigma0} and \code{sigma0} must be specified. If both existed,
 #' \code{sigma0} will be used.
-#' @param \code{epoch} The epoch length (in second) of the Activity Index. Must
+#' @param epoch The epoch length (in second) of the Activity Index. Must
 #' be a positive integer.
-#' @param \code{hertz} The sample rate of the data.
+#' @param hertz The sample rate of the data.
 #' @return A data frame with two columns. The first column has the "record
 #' number" associated with each entry of Activity Index, while the second column
 #'  has the actual value of Activity Index.
@@ -84,6 +84,8 @@ computeActivityIndex.GT3XPlus=function(x,x_sigma0=NULL,sigma0=NULL,epoch=1,hertz
 {
   Time = NULL
   rm("Time")
+  X = Y = Z = NULL
+  rm(list = c("X", "Y", "Z"))
 
   if (x$Hertz!=hertz) stop("hertz must be equal to the sample rate of GT3XPlus!")
   if (is.null(x_sigma0)&&is.null(sigma0)) stop("Either x_sigma0 or sigma0 needs to be specified!")

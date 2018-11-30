@@ -1,7 +1,7 @@
 Package: ActivityIndex
 Type: Package
 Title: Activity Index Calculation using Raw Accelerometry Data
-Version: 0.3.3
+Version: 0.3.4
 Date: 2018-11-29
 Authors@R: c(
     person(given = "Jiawei",
@@ -16,12 +16,16 @@ Authors@R: c(
            )
 Description: Read raw accelerometry data and to calculate Activity Index based on the data.
 License: GPL-3
+Depends: 
+    R (>= 2.10)
 Imports: 
     matrixStats, 
     data.table,
-    utils
+    utils,
+    R.utils
 Suggests:
-    knitr
+    knitr,
+    testthat
 LazyData: true
 LazyLoad: true
 VignetteBuilder: knitr

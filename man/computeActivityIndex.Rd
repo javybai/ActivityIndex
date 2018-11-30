@@ -16,22 +16,22 @@ computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1,
   sigma0 = NULL, epoch = 1, hertz)
 }
 \arguments{
-\item{\code{x}}{An object containing raw accelerometry data, which could
+\item{x}{An object containing raw accelerometry data, which could
 either be a 4-column data frame or "\code{GT3XPlus}" object. See "Details".}
 
-\item{\code{x_sigma0}}{A 4-column data frame containing the raw accelerometry
+\item{x_sigma0}{A 4-column data frame containing the raw accelerometry
 data when the device is not worn. The 1st column has the record/index
 number. The 2nd to 4th columns contain the tri-axial raw acceleration. The
 data will be used to calculate \eqn{\bar{\sigma}_i}.}
 
-\item{\code{sigma0}}{Specify \eqn{\bar{\sigma}_i} directly. At least one of
+\item{sigma0}{Specify \eqn{\bar{\sigma}_i} directly. At least one of
 \code{x_sigma0} and \code{sigma0} must be specified. If both existed,
 \code{sigma0} will be used.}
 
-\item{\code{epoch}}{The epoch length (in second) of the Activity Index. Must
+\item{epoch}{The epoch length (in second) of the Activity Index. Must
 be a positive integer.}
 
-\item{\code{hertz}}{The sample rate of the data.}
+\item{hertz}{The sample rate of the data.}
 }
 \value{
 A data frame with two columns. The first column has the "record

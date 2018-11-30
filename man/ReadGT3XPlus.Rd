@@ -44,7 +44,7 @@ etc. The 11th may further be omitted, if it is the header for the tri-axial acce
 time series. The function only reads the first 3 columns from then, if more are present.
 }
 \examples{
-filename = system.file("extdata","sample_GT3X+.csv",package="ActivityIndex")
+filename = system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex")
 res = ReadGT3XPlus(filename)
 
 }

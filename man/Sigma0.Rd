@@ -7,12 +7,12 @@
 Sigma0(x, hertz = 30)
 }
 \arguments{
-\item{\code{x}}{A 4-column data frame containing the raw accelerometry
+\item{x}{A 4-column data frame containing the raw accelerometry
 data when the device is not worn. The 1st column has the record/index
 number. The 2nd to 4th columns contain the tri-axial raw acceleration. The
 data will be used to calculate \eqn{\bar{\sigma}_i}.}
 
-\item{\code{hertz}}{The sample rate of the data.}
+\item{hertz}{The sample rate of the data.}
 }
 \value{
 \eqn{\bar{\sigma}_i}, a numeric vector of length one.
@@ -20,4 +20,12 @@ data will be used to calculate \eqn{\bar{\sigma}_i}.}
 \description{
 \code{Sigma0} computes \eqn{\bar{\sigma}_i}, which is needed for
  the Activity Index computing in \code{\link{computeActivityIndex}}
+}
+\examples{
+filename = system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex")
+res = ReadGT3XPlus(filename)
+hertz = res$Hertz
+x = res$Raw[ 1:1000, c("Time", "X", "Y", "Z")]
+res = Sigma0(x, hertz = hertz)
+testthat::expect_true(res ==  0.1843216371355338723)
 }

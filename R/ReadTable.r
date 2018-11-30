@@ -16,7 +16,7 @@
 #' @export
 #' @importFrom utils read.csv
 #' @examples
-#' filename = system.file("extdata","sample_table.csv",package="ActivityIndex")
+#' filename = system.file("extdata","sample_table.csv.gz",package="ActivityIndex")
 #' res = ReadTable(filename)
 #'
 ReadTable = function(filename) {

@@ -41,12 +41,18 @@
 #' @import data.table
 #' @import matrixStats
 #'
+#' @importFrom R.utils gunzip
 #' @examples
-#' filename = system.file("extdata","sample_GT3X+.csv",package="ActivityIndex")
+#' filename = system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex")
 #' res = ReadGT3XPlus(filename)
 #'
-ReadGT3XPlus=function(filename)
-{
+ReadGT3XPlus = function(filename) {
+  stopifnot(length(filename) == 1)
+  if (grepl("[.]gz$", filename)) {
+    filename = R.utils::gunzip(filename,
+                               temporary = TRUE, remove = FALSE,
+                               overwrite = TRUE)
+  }
   result=list(SN="",StartTime="",StartDate="",Epoch="",DownloadTime="",DownloadDate="",Hertz="",Raw="")
   ### Header ###
   result_Head=readLines(filename,10)
@@ -76,26 +82,27 @@ ReadGT3XPlus=function(filename)
                      colClasses=rep("numeric",ncol(row1)),header=FALSE,fill=TRUE,
                      showProgress=FALSE)
   }
+  TimeScale = ActivityIndex::TimeScale
   # Remove incomplete row
   if (any(is.na(result$Raw[nrow(result$Raw),]))) result$Raw=result$Raw[-nrow(result$Raw),]
   # Time Stamp #
   if (as.numeric(substr(result$Epoch,7,8))<=1)
   {
-    Time_Temp_idx=which(ActivityIndex::TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)%/%result$Hertz+1)
-    Time_Temp_idx=Time_Temp_idx%%length(ActivityIndex::TimeScale)
+    Time_Temp_idx=which(TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)%/%result$Hertz+1)
+    Time_Temp_idx=Time_Temp_idx%%length(TimeScale)
     Time_Temp_idx=rep(Time_Temp_idx,each=result$Hertz)
     Time_Temp_idx=Time_Temp_idx[1:nrow(result$Raw)]
-    Time_Temp_idx[which(Time_Temp_idx==0)]=length(ActivityIndex::TimeScale)
+    Time_Temp_idx[which(Time_Temp_idx==0)]=length(TimeScale)
   } else
   {
-    Time_Temp_idx=which(ActivityIndex::TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)*as.numeric(substr(result$Epoch,7,8))+1)
-    Time_Temp_idx=Time_Temp_idx%%length(ActivityIndex::TimeScale)
+    Time_Temp_idx=which(TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)*as.numeric(substr(result$Epoch,7,8))+1)
+    Time_Temp_idx=Time_Temp_idx%%length(TimeScale)
     Time_Temp_idx=Time_Temp_idx[which((1:length(Time_Temp_idx))%%as.numeric(substr(result$Epoch,7,8))==1)]
     Time_Temp_idx=Time_Temp_idx[1:nrow(result$Raw)]
-    Time_Temp_idx[which(Time_Temp_idx==0)]=length(ActivityIndex::TimeScale)
+    Time_Temp_idx[which(Time_Temp_idx==0)]=length(TimeScale)
   }
   # Combine #
-  result$Raw=cbind(rep(result$StartDate,nrow(result$Raw)),ActivityIndex::TimeScale[Time_Temp_idx],result$Raw)
+  result$Raw=cbind(rep(result$StartDate,nrow(result$Raw)),TimeScale[Time_Temp_idx],result$Raw)
   if (ncol(result$Raw)>5)
   {
     colnames(result$Raw)=c("Date","Time","X","Y","Z",paste0("V",1:(ncol(result$Raw)-5)))

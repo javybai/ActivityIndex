@@ -22,7 +22,7 @@ The function reads csv files containing only three columns: acceleration time se
 of x-, y- and z-axis.
 }
 \examples{
-filename = system.file("extdata","sample_table.csv",package="ActivityIndex")
+filename = system.file("extdata","sample_table.csv.gz",package="ActivityIndex")
 res = ReadTable(filename)
 
 }
