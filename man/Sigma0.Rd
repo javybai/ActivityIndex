@@ -7,12 +7,12 @@
 Sigma0(x, hertz = 30)
 }
 \arguments{
-\item{x}{A 4-column data frame containing the raw accelerometry
-data when the device is not worn. The 1st column has the record/index 
-number. The 2nd to 4th columns contain the tri-axial raw acceleration. The 
+\item{\code{x}}{A 4-column data frame containing the raw accelerometry
+data when the device is not worn. The 1st column has the record/index
+number. The 2nd to 4th columns contain the tri-axial raw acceleration. The
 data will be used to calculate \eqn{\bar{\sigma}_i}.}
 
-\item{hertz}{The sample rate of the data.}
+\item{\code{hertz}}{The sample rate of the data.}
 }
 \value{
 \eqn{\bar{\sigma}_i}, a numeric vector of length one.
@@ -21,4 +21,3 @@ data will be used to calculate \eqn{\bar{\sigma}_i}.}
 \code{Sigma0} computes \eqn{\bar{\sigma}_i}, which is needed for
  the Activity Index computing in \code{\link{computeActivityIndex}}
 }
-

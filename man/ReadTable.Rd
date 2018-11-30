@@ -10,7 +10,7 @@ ReadTable(filename)
 \item{filename}{The name of the csv file.}
 }
 \value{
-The \code{ReadTable} returns a data frame with 4 columns: Index, X, Y and Z. 
+The \code{ReadTable} returns a data frame with 4 columns: Index, X, Y and Z.
 Index is the column for the indices of acceleration. X, Y and Z are for the acceleration
 time series in each direction.
 }
@@ -21,4 +21,8 @@ time series in each direction.
 The function reads csv files containing only three columns: acceleration time series
 of x-, y- and z-axis.
 }
+\examples{
+filename = system.file("extdata","sample_table.csv",package="ActivityIndex")
+res = ReadTable(filename)
 
+}
