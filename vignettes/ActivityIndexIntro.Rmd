@@ -1,6 +1,6 @@
 ---
 title: "Introduction to the `ActivityIndex` package in `R`"
-author: "Jiawei Bair"
+author: "Jiawei Bai"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
