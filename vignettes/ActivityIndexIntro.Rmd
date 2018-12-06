@@ -1,0 +1,136 @@
+---
+title: "Introduction to the `ActivityIndex` package in `R`"
+author: "Jiawei Bair"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to the ActivityIndex package in R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r "setup",echo=FALSE,cache=FALSE,warning=FALSE,message=FALSE}
+library(ActivityIndex)
+library(knitr)
+options(width=52,scipen=1,digits=5)
+opts_chunk$set(tidy=TRUE)
+```
+
+
+
+The **ActivityIndex** package contains functions to 1) read raw accelerometry data and 2) compute "Activity Index" (AI) using the raw data. This introduction provides step-by-step instructions on how to read data from `.csv` files and then compute AI.
+
+# Data description
+
+The sample data were collected by accelerometer GT3X+ (ActiGraph, ), downloaded from \url{https://help.theactigraph.com/entries/21688392-GT3X-ActiSleep-Sample-Data}. The data are available in the **ActivityIndex** package and their paths can be acquired using command:
+```{r "AccessCSV",echo=TRUE,eval=FALSE}
+system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex")
+system.file("extdata","sample_table.csv.gz",package="ActivityIndex")
+```
+
+`sample_GT3X+.csv.gz` is the standard output of GT3X+ accelerometer, with a $10$-line header containing the basic information of the data collection, followed by $3$-column raw acceleration data. `sample_table.csv.gz` contains the same $3$-column acceleration data without the $10$-line header. The first $15$ lines of `sample_GT3X+.csv.gz` are shown below:
+```{r "GT3X+_CSV",echo=FALSE,eval=TRUE}
+fname = system.file("extdata", "sample_GT3X+.csv.gz", package = "ActivityIndex")
+unzipped = R.utils::gunzip(fname, temporary = TRUE, remove = FALSE,
+                           overwrite = TRUE)
+cat(readLines(unzipped, n = 15), sep = "\n")
+```
+
+while the first $5$ lines of `sample_table.csv.gz` are
+
+```{r "Table_CSV",echo=FALSE,eval=TRUE}
+fname = system.file("extdata", "sample_table.csv.gz", package = "ActivityIndex")
+unzipped = R.utils::gunzip(fname,
+                           temporary = TRUE,
+                           remove = FALSE,
+                           overwrite = TRUE)
+cat(readLines(unzipped, n = 5), sep = "\n")
+```
+Users should follow the same format while preparing their own data.
+
+# Read the data
+
+`ReadGT3XPlus` and `ReadTable` functions read the GT3X+ `.csv.gz` file and the $3$-column acceleration table, respectively. To read the data, use the following code
+
+```{r "ReadData",echo=TRUE,cache=TRUE,warning=FALSE,message=FALSE}
+sampleGT3XPlus=ReadGT3XPlus(system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex"))
+sampleTable=ReadTable(system.file("extdata", "sample_table.csv.gz",package="ActivityIndex"))
+```
+
+Now that object `sampleGT3XPlus` has class `GT3XPlus`, which contains  the raw data and header information. Function `ReadGT3XPlus` automatically applies time stamps to the acceleration time series using the information from the header. For example, our sample data look like this
+
+```{r "str_sampleGT3XPlus",echo=TRUE,eval=TRUE}
+str(sampleGT3XPlus)
+```
+
+However, `sampleTable` is much simpler, since limited information was given. The first $6$ lines of it look like this
+
+```{r "head_sampleTable",echo=TRUE,eval=TRUE}
+head(sampleTable,n=6)
+```
+
+# Compute AI
+AI is a metric to reflect the variability of the raw acceleration signals after removing systematic noise of the signals. Formally, its definition (a one-second AI) is
+
+$$
+\text{AI}^{\text{new}}_i(t;H)=\sqrt{\max\left(\frac{1}{3}\left\{\sum_{m=1}^{3}{\frac{\sigma^2_{im}(t;H)-\bar{\sigma}^2_{i}}{\bar{\sigma}^2_{i}}}\right\},0\right)},\label{EQ: AI}
+$$
+where $\sigma^2_{im}(t;H)$ ($m=1,2,3$) is axis-$m$'s moving variance during the window starting from time $t$ (of size $H$), and  $\bar{\sigma}_i$ is the systematic noise of the signal when the device is placed steady.
+
+Function `computeActivityIndex` is used to compute AI. The syntax of the function is
+
+```{r "computeAI_syntax",echo=TRUE,eval=FALSE}
+computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
+```
+
+`x` is the data used to compute AI. It can either be a `GT3XPlus` object, or a $4$-column data frame (tri-axial acceleration time series with an index column). Either `x_sigma0` or `sigma0` are used to determine the systematic noise $\bar{\sigma}_i$. More detailed example will follow to illustrate how to use them. `epoch` is the epoch length (in second) of the AI. For example, the default `epoch=1` yields to $1$-second AI, while minute-by-minute AI is given by `epoch=60`. `hertz` specifies the sample rate (in Hertz), which is usually $10$, $30$ or $80$, etc.
+
+We will continue our example of computing AI using our data `sampleGT3XPlus` and `sampleTable`.
+
+## Find $\bar{\sigma}_i$ on-the-fly
+According to the definition of the systematic noise $\bar{\sigma}_i$, it changes with subject $i$. Therefore, strictly speaking, we are to compute $\bar{\sigma}_i$ every time we compute AI for a new subject $i$. Argument `x_sigma0` can be used to specify a $4$-column data frame (one column for indices and three columns for acceleration) which is used to calculate $\bar{\sigma}_i$. The $4$-column data frame should contain the raw accelerometry data collected while the accelerometer is not worn or kept steady. For example,  if we say a segment of our sample data (`sampleTable[1004700:1005600,]`) meets such requirement, we could compute AI using the following code
+
+```{r "computeAI_onthefly",echo=TRUE,eval=TRUE}
+AI_sampleTable_x=computeActivityIndex(sampleTable, x_sigma0=sampleTable[1004700:1005600,], epoch=1, hertz=30)
+AI_sampleGT3XPlus_x=computeActivityIndex(sampleGT3XPlus, x_sigma0=sampleTable[1004700:1005600,], epoch=1, hertz=30)
+```
+
+## Find $\bar{\sigma}_i$ beforehand
+Sometimes we do not want to calculate $\bar{\sigma}_i$ whenever computing AI. For example, if $10$ accelerometers were used to collect data over $100$ subjects, there is no reason to calculate $\bar{\sigma}_i$ for $100$ times. One $\bar{\sigma}_i$ is only needed for one accelerometer. Furthermore, if we could verify the $\bar{\sigma}_i$'s of the $10$ accelerometers are close to each others, we could combine them into a single $\bar{\sigma}=\sum_{i=1}^{10}{\bar{\sigma}_i}/10$. In this case, $\bar{\sigma}$ will be used for all subjects in that study, which is crucial for fast processing of data collected by large studies.
+
+This can be achieved by using the argument `x_sigma0` to specify a pre-determined $\bar{\sigma}_i$. Still using the same segment of data (`sampleTable[1004700:1005600,]`) as an example, we calculate a `sample_sigma0` beforehand with code
+
+```{r "compute_sigma0",echo=TRUE,eval=TRUE}
+sample_sigma0=Sigma0(sampleTable[1004700:1005600,],hertz=30)
+```
+
+Then we could use this `sample_sigma0`=$`r sample_sigma0`$ to compute AI with code
+
+```{r "computeAI_beforehand",echo=TRUE,eval=TRUE}
+AI_sampleTable=computeActivityIndex(sampleTable, sigma0=sample_sigma0, epoch=1, hertz=30)
+AI_sampleGT3XPlus=computeActivityIndex(sampleGT3XPlus, sigma0=sample_sigma0, epoch=1, hertz=30)
+```
+
+# Explore AI
+Using either method to compute AI yield to the same result. The output of function `computeActivityIndex` has two columns: `RecordNo` saves the indices and `AI` stores AI. The first $10$ lines of `AI_sampleGT3XPlus` is as follow
+
+```{r "head_AI",echo=TRUE,eval=TRUE}
+head(AI_sampleGT3XPlus,n=10)
+```
+
+We could also compute AI in different epoch. Say we want minute-by-minute AI, then we could use the following code
+
+```{r "computeAI_minute",echo=TRUE,eval=TRUE}
+AI_sampleTable_min=computeActivityIndex(sampleTable, sigma0=sample_sigma0, epoch=60, hertz=30)
+AI_sampleGT3XPlus_min=computeActivityIndex(sampleGT3XPlus, sigma0=sample_sigma0, epoch=60, hertz=30)
+```
+
+And according to the definition of AI, the minute-by-minute AI's are simply the sum of all 1-second AI within each minute. The AI during the first $6$ minutes are
+
+```{r "head_AI_min",echo=TRUE,eval=TRUE}
+head(AI_sampleGT3XPlus_min)
+```
+
+
+
