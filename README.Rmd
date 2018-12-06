@@ -49,7 +49,7 @@ The ActivityIndex package includes a vignette to demonstrate a typical work flow
 ```r
 browseVignettes(package="ActivityIndex")
 ```
-and interactively browsing.
+and interactively browsing or going to http://javybai.github.io/ActivityIndex/articles/ActivityIndexIntro.html.
 
 
 ## Further Questions

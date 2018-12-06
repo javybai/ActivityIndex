@@ -53,7 +53,7 @@ Users should follow the same format while preparing their own data.
 
 `ReadGT3XPlus` and `ReadTable` functions read the GT3X+ `.csv.gz` file and the $3$-column acceleration table, respectively. To read the data, use the following code
 
-```{r "ReadData",echo=TRUE,cache=TRUE,warning=FALSE,message=FALSE}
+```{r "ReadData",echo=TRUE,warning=FALSE,message=FALSE}
 sampleGT3XPlus=ReadGT3XPlus(system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex"))
 sampleTable=ReadTable(system.file("extdata", "sample_table.csv.gz",package="ActivityIndex"))
 ```

@@ -68,7 +68,8 @@ command
 browseVignettes(package="ActivityIndex")
 ```
 
-and interactively browsing.
+and interactively browsing or going to
+<http://javybai.github.io/ActivityIndex/articles/ActivityIndexIntro.html>.
 
 ## Further Questions
 
