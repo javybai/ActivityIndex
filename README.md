@@ -36,16 +36,14 @@ Metrics](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0160
 
 ## Package Installation
 
-ActivityIndex software can be installed via GitHub. Users should have R
-(<http://www.r-project.org/>) installed on their computer before
-installing ActivityIndex.
+ActivityIndex software can be installed via GitHub. Users should have
+`R` installed on their computer before installing ActivityIndex.
 
 ### Install devtools package
 
 To install ActivityIndex package via GitHub, the user must have
-installed
-[devtools](https://cran.r-project.org/web/packages/devtools/index.html),
-which could be completed by using the following R command
+installed [devtools](https://cran.r-project.org/package=devtools), which
+could be completed by using the following R command
 
 ``` r
 install.packages("devtools")
@@ -70,8 +68,7 @@ command
 browseVignettes(package="ActivityIndex")
 ```
 
-or via GitHub at
-<https://github.com/javybai/ActivityIndex/blob/master/inst/doc/ActivityIndexIntro.pdf>.
+and interactively browsing.
 
 ## Further Questions
 
