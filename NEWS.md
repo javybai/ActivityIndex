@@ -1,3 +1,9 @@
+# ActivityIndex 0.3.5
+
+* Vignette now in Markdown.
+* Site is built using `pkgdown::build_site`.
+* CRAN release version.
+
 # ActivityIndex 0.3.4
 
 * Adding tests with `testthat`.
