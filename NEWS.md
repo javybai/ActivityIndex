@@ -1,3 +1,8 @@
+# ActivityIndex 0.3.6
+
+* Example for `computeActivityIndex` added, taken from vignette.
+* `print` methods for S3 `ActivityIndex` object created.
+
 # ActivityIndex 0.3.5
 
 * Vignette now in Markdown.
