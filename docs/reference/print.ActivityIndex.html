@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>\(\bar{\sigma}_i\) computing using raw accelerometry data — Sigma0 • ActivityIndex</title>
+<title>Print method for token — print.ActivityIndex • ActivityIndex</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="\(\bar{\sigma}_i\) computing using raw accelerometry data — Sigma0" />
+<meta property="og:title" content="Print method for token — print.ActivityIndex" />
 
-<meta property="og:description" content="Sigma0 computes \(\bar{\sigma}_i\), which is needed for
- the Activity Index computing in computeActivityIndex" />
+<meta property="og:description" content="Print method for token" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,56 +107,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>\(\bar{\sigma}_i\) computing using raw accelerometry data</h1>
+    <h1>Print method for token</h1>
     
-    <div class="hidden name"><code>Sigma0.Rd</code></div>
+    <div class="hidden name"><code>print.ActivityIndex.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>Sigma0</code> computes \(\bar{\sigma}_i\), which is needed for
- the Activity Index computing in <code><a href='computeActivityIndex.html'>computeActivityIndex</a></code></p>
+    <p>Print method for token</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>Sigma0</span>(<span class='no'>x</span>, <span class='kw'>hertz</span> <span class='kw'>=</span> <span class='fl'>30</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for ActivityIndex</span>
+<span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A 4-column data frame containing the raw accelerometry
-data when the device is not worn. The 1st column has the record/index
-number. The 2nd to 4th columns contain the tri-axial raw acceleration. The
-data will be used to calculate \(\bar{\sigma}_i\).</p></td>
+      <td><p>an object used to select a method.</p></td>
     </tr>
     <tr>
-      <th>hertz</th>
-      <td><p>The sample rate of the data.</p></td>
+      <th>...</th>
+      <td><p>further arguments passed to or from other methods</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>\(\bar{\sigma}_i\), a numeric vector of length one.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>filename</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>,<span class='st'>"sample_GT3X+.csv.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"ActivityIndex"</span>)
-<span class='no'>res</span> <span class='kw'>=</span> <span class='fu'><a href='ReadGT3XPlus.html'>ReadGT3XPlus</a></span>(<span class='no'>filename</span>)
-<span class='no'>hertz</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>Hertz</span>
-<span class='no'>x</span> <span class='kw'>=</span> <span class='no'>res</span>$<span class='no'>Raw</span>[ <span class='fl'>1</span>:<span class='fl'>1000</span>, <span class='fu'>c</span>(<span class='st'>"Time"</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>, <span class='st'>"Z"</span>)]
-<span class='no'>res</span> <span class='kw'>=</span> <span class='fu'>Sigma0</span>(<span class='no'>x</span>, <span class='kw'>hertz</span> <span class='kw'>=</span> <span class='no'>hertz</span>)
-<span class='kw pkg'>testthat</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/testthat/topics/logical-expectations'>expect_true</a></span>(<span class='no'>res</span> <span class='kw'>==</span>  <span class='fl'>0.1843216371355338723</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>RecordNo</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>AI</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>))
+<span class='fu'>class</span>(<span class='no'>x</span>) <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ActivityIndex"</span>, <span class='fu'>class</span>(<span class='no'>x</span>))
+<span class='fu'>print</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Showing head and tail rows
+#&gt;     RecordNo         AI
+#&gt; 1 -1.8218177 -0.5585420
+#&gt; 2 -0.2473253 -0.5366633
+#&gt; 3 -0.2441996  0.2271271
+#&gt; 4 -0.2827054  0.9784549
+#&gt; 5 -0.5536994 -0.2088827
+#&gt; 6  0.6289820 -1.3994105
+#&gt;       RecordNo          AI
+#&gt; 95  -0.3872136 -0.42938009
+#&gt; 96  -0.7854327  1.36046133
+#&gt; 97  -1.0567369 -0.07085743
+#&gt; 98  -0.7955414 -0.27215368
+#&gt; 99  -1.7562754 -2.44668003
+#&gt; 100 -0.6905379  0.06548664</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
