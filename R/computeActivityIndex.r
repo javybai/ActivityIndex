@@ -27,6 +27,18 @@
 #'    \item An "\code{GT3XPlus}" object given by function
 #'    \code{\link{ReadGT3XPlus}}.
 #'    }
+#' @examples
+#' library(graphics)
+#' fname = system.file("extdata", "sample_table.csv.gz",
+#' package = "ActivityIndex")
+#' sampleTable = ReadTable(fname)
+#' AI_sampleTable_x = computeActivityIndex(
+#'   sampleTable,
+#'   x_sigma0 = sampleTable[1004700:1005600, ],
+#'   epoch = 1,
+#'   hertz = 30)
+#' AI_sampleTable_x
+#' plot(AI ~ RecordNo, data = AI_sampleTable_x, type = "l")
 #' @export
 computeActivityIndex=function(x,x_sigma0=NULL,sigma0=NULL,epoch=1,hertz)
 {
@@ -75,6 +87,7 @@ computeActivityIndex.default=function(x,x_sigma0=NULL,sigma0=NULL,epoch=1,hertz)
     result=result0
   }
   colnames(result)=c("RecordNo","AI")
+  class(result) = c("ActivityIndex", class(result))
   return(result)
 }
 
@@ -120,6 +133,7 @@ computeActivityIndex.GT3XPlus=function(x,x_sigma0=NULL,sigma0=NULL,epoch=1,hertz
     result0[,1]=result[(1:(L_AI%/%epoch)-1)*epoch+1,1]
     result=result0
   }
-  colnames(result)=c("RecordNo","AI")
+  colnames(result) = c("RecordNo","AI")
+  class(result) = c("ActivityIndex", class(result))
   return(result)
 }

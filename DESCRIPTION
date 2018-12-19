@@ -1,8 +1,8 @@
 Package: ActivityIndex
 Type: Package
-Title: Activity Index Calculation using Raw 'Accelerometry' Data
-Version: 0.3.5
-Date: 2018-12-06
+Title: Activity Index Calculation using Raw Accelerometry Data
+Version: 0.3.6
+Date: 2018-12-19
 Authors@R: c(
     person(given = "Jiawei",
            family = "Bai",
@@ -16,8 +16,8 @@ Authors@R: c(
            role = c("ctb"),
            comment = c(ORCID = "0000-0001-6469-1750"))
            )
-Description: Read raw 'accelerometry' from 'GT3X+' data and 
-    plain table data to calculate Activity Index from 'Bai' 
+Description: Read raw accelerometry from 'GT3X+' data and 
+    plain table data to calculate Activity Index from Bai et al. (2016)
     <doi:10.1371/journal.pone.0160644>.  
 License: GPL-3
 Depends: 
@@ -30,6 +30,7 @@ Imports:
 Suggests:
     knitr,
     testthat,
+    graphics,
     rmarkdown
 LazyData: true
 LazyLoad: true
