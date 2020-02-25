@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ActivityIndex</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.5</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.6</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
 </h1>
                         <h4 class="author">Jiawei Bai</h4>
             
-            <h4 class="date">2018-12-06</h4>
+            <h4 class="date">2018-12-19</h4>
       
       
       <div class="hidden name"><code>ActivityIndexIntro.Rmd</code></div>
@@ -194,11 +194,15 @@
 <a href="#explore-ai" class="anchor"></a>Explore AI</h1>
 <p>Using either method to compute AI yield to the same result. The output of function <code>computeActivityIndex</code> has two columns: <code>RecordNo</code> saves the indices and <code>AI</code> stores AI. The first <span class="math inline">\(10\)</span> lines of <code>AI_sampleGT3XPlus</code> is as follow</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">head</span>(AI_sampleGT3XPlus, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
-<pre><code>##    RecordNo      AI
-## 1  10:54:00   0.000
-## 2  10:54:01   0.000
-## 3  10:54:02   0.000
-## 4  10:54:03   0.000
+<pre><code>## Showing head and tail rows
+##   RecordNo      AI
+## 1 10:54:00   0.000
+## 2 10:54:01   0.000
+## 3 10:54:02   0.000
+## 4 10:54:03   0.000
+## 5 10:54:04 133.708
+## 6 10:54:05  34.837
+##    RecordNo      AI
 ## 5  10:54:04 133.708
 ## 6  10:54:05  34.837
 ## 7  10:54:06  62.947
@@ -212,7 +216,15 @@
 <a class="sourceLine" id="cb15-4" title="4">    <span class="dt">sigma0 =</span> sample_sigma0, <span class="dt">epoch =</span> <span class="dv">60</span>, <span class="dt">hertz =</span> <span class="dv">30</span>)</a></code></pre></div>
 <p>And according to the definition of AI, the minute-by-minute AI’s are simply the sum of all 1-second AI within each minute. The AI during the first <span class="math inline">\(6\)</span> minutes are</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">head</span>(AI_sampleGT3XPlus_min)</a></code></pre></div>
-<pre><code>##   RecordNo       AI
+<pre><code>## Showing head and tail rows
+##   RecordNo       AI
+## 1 10:54:00 3002.460
+## 2 10:55:00  392.185
+## 3 10:56:00  655.593
+## 4 10:57:00   89.337
+## 5 10:58:00  499.150
+## 6 10:59:00  238.130
+##   RecordNo       AI
 ## 1 10:54:00 3002.460
 ## 2 10:55:00  392.185
 ## 3 10:56:00  655.593

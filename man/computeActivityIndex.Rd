@@ -6,14 +6,11 @@
 \alias{computeActivityIndex.GT3XPlus}
 \title{Compute Activity Index}
 \usage{
-computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1,
-  hertz)
+computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 
-\method{computeActivityIndex}{default}(x, x_sigma0 = NULL,
-  sigma0 = NULL, epoch = 1, hertz)
+\method{computeActivityIndex}{default}(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 
-\method{computeActivityIndex}{GT3XPlus}(x, x_sigma0 = NULL,
-  sigma0 = NULL, epoch = 1, hertz)
+\method{computeActivityIndex}{GT3XPlus}(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 }
 \arguments{
 \item{x}{An object containing raw accelerometry data, which could
@@ -53,4 +50,17 @@ and epoch length.
    \item An "\code{GT3XPlus}" object given by function
    \code{\link{ReadGT3XPlus}}.
    }
+}
+\examples{
+library(graphics)
+fname = system.file("extdata", "sample_table.csv.gz",
+package = "ActivityIndex")
+sampleTable = ReadTable(fname)
+AI_sampleTable_x = computeActivityIndex(
+  sampleTable,
+  x_sigma0 = sampleTable[1004700:1005600, ],
+  epoch = 1,
+  hertz = 30)
+AI_sampleTable_x
+plot(AI ~ RecordNo, data = AI_sampleTable_x, type = "l")
 }
