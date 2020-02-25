@@ -6,14 +6,11 @@
 \alias{computeActivityIndex.GT3XPlus}
 \title{Compute Activity Index}
 \usage{
-computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1,
-  hertz)
+computeActivityIndex(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 
-\method{computeActivityIndex}{default}(x, x_sigma0 = NULL,
-  sigma0 = NULL, epoch = 1, hertz)
+\method{computeActivityIndex}{default}(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 
-\method{computeActivityIndex}{GT3XPlus}(x, x_sigma0 = NULL,
-  sigma0 = NULL, epoch = 1, hertz)
+\method{computeActivityIndex}{GT3XPlus}(x, x_sigma0 = NULL, sigma0 = NULL, epoch = 1, hertz)
 }
 \arguments{
 \item{x}{An object containing raw accelerometry data, which could
