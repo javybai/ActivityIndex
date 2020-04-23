@@ -1,4 +1,4 @@
-context("Simple test for Sigma0")
+testthat::context("Simple test for Sigma0")
 
 testthat::test_that("Make sure Sigma0 giving same answer", {
   filename = system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex")

@@ -2,7 +2,7 @@ Package: ActivityIndex
 Type: Package
 Title: Activity Index Calculation using Raw 'Accelerometry' Data
 Version: 0.3.7
-Date: 2020-02-24
+Date: 2020-04-23
 Authors@R: c(
     person(given = "Jiawei",
            family = "Bai",
@@ -37,5 +37,5 @@ Suggests:
 LazyData: true
 LazyLoad: true
 VignetteBuilder: knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Encoding: UTF-8
