@@ -2,7 +2,6 @@ Package: ActivityIndex
 Type: Package
 Title: Activity Index Calculation using Raw 'Accelerometry' Data
 Version: 0.3.7
-Date: 2020-04-23
 Authors@R: c(
     person(given = "Jiawei",
            family = "Bai",
@@ -18,7 +17,7 @@ Authors@R: c(
            )
 Description: Reads raw 'accelerometry' from 'GT3X+' data and 
     plain table data to calculate Activity Index from 'Bai et al.' (2016)
-    <doi:10.1371/journal.pone.0160644>.  The Acivity Index refers to the 
+    <doi:10.1371/journal.pone.0160644>.  The Activity Index refers to the 
     square root of the second-level average variance of the three
     'accelerometry' axes.
 License: GPL-3
@@ -37,5 +36,5 @@ Suggests:
 LazyData: true
 LazyLoad: true
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Encoding: UTF-8

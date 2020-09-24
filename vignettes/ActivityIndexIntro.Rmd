@@ -4,7 +4,7 @@ author: "Jiawei Bai"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to the ActivityIndex package in R}
+  %\VignetteIndexEntry{Introduction to the `ActivityIndex` package in `R`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
