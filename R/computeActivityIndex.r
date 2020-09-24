@@ -95,45 +95,18 @@ computeActivityIndex.default=function(x,x_sigma0=NULL,sigma0=NULL,epoch=1,hertz)
 #' @export
 computeActivityIndex.GT3XPlus=function(x,x_sigma0=NULL,sigma0=NULL,epoch=1,hertz)
 {
-  Time = NULL
-  rm("Time")
-  X = Y = Z = NULL
-  rm(list = c("X", "Y", "Z"))
+  if (x$Hertz != hertz) {
+    stop("hertz must be equal to the sample rate of GT3XPlus!")
+  }
+  x = x$Raw
+  cn = colnames(x)
+  cn[ cn == "Time"] = "Index"
+  colnames(x) = cn
 
-  if (x$Hertz!=hertz) stop("hertz must be equal to the sample rate of GT3XPlus!")
-  if (is.null(x_sigma0)&&is.null(sigma0)) stop("Either x_sigma0 or sigma0 needs to be specified!")
-  if (is.null(sigma0))
-  {
-    sigma0=Sigma0(x_sigma0,hertz)
-  }
-  # Note that x here is a GT3XPlus subject, while x$Raw is our data table
-  # x$Raw has five columns: Date, Time, X, Y, Z
-  n=nrow(x$Raw)%/%hertz*hertz
-  result=array(0,c(n%/%hertz,2))
-  if (sigma0!=0)
-  {
-    result[,2]=x$Raw[1:n,(rowSds(matrix(X,ncol=hertz,byrow=TRUE))^2-sigma0^2)/sigma0^2+
-                   (rowSds(matrix(Y,ncol=hertz,byrow=TRUE))^2-sigma0^2)/sigma0^2+
-                   (rowSds(matrix(Z,ncol=hertz,byrow=TRUE))^2-sigma0^2)/sigma0^2]
-  } else
-  {
-    result[,2]=x$Raw[1:n,rowSds(matrix(X,ncol=hertz,byrow=TRUE))^2+
-                   rowSds(matrix(Y,ncol=hertz,byrow=TRUE))^2+
-                   rowSds(matrix(Z,ncol=hertz,byrow=TRUE))^2]
-  }
-  result[which(result[,2]<0),2]=0
-  result[,2]=sqrt(result[,2]/3)
-  result=as.data.frame(result,stringsAsFactors=FALSE)
-  result[,1]=x$Raw[(1:(n%/%hertz)-1)*hertz+1,Time] # Fetch "Time"
-  if (epoch>1)
-  {
-    L_AI=length(result[,2])
-    result0=as.data.frame(array(0,c(L_AI%/%epoch,2)),stringsAsFactors=FALSE)
-    result0[,2]=as.numeric(rowSums(matrix(result[1:(L_AI-L_AI%%epoch),2],ncol=epoch,byrow=TRUE)))
-    result0[,1]=result[(1:(L_AI%/%epoch)-1)*epoch+1,1]
-    result=result0
-  }
-  colnames(result) = c("RecordNo","AI")
-  class(result) = c("ActivityIndex", class(result))
+  result = computeActivityIndex.default(x,
+                               x_sigma0 = x_sigma0,
+                               sigma0 = sigma0,
+                               epoch = epoch,
+                               hertz = hertz)
   return(result)
 }
