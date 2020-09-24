@@ -23,6 +23,12 @@ testthat::test_that("computeAI same answer regardless of input", {
     epoch=1,
     hertz=30)
 
+  testthat::expect_silent(
+    computeActivityIndex(sampleGT3XPlus,
+                         epoch = 1L,
+                         hertz = 30L,
+                         sigma0 = 0)
+  )
 
   testthat::expect_equal(AI_sampleTable_x$AI,
                          AI_sampleGT3XPlus_x$AI)
@@ -30,6 +36,18 @@ testthat::test_that("computeAI same answer regardless of input", {
     computeActivityIndex(sampleGT3XPlus, x_sigma0=s0,
                          epoch = 1,
                          hertz = 100)
+  )
+  testthat::expect_error(
+    computeActivityIndex(sampleGT3XPlus, x_sigma0=s0,
+                         epoch = 0.3,
+                         hertz = 100),
+    regexp = "must not be less"
+  )
+  testthat::expect_error(
+    computeActivityIndex(sampleGT3XPlus, x_sigma0=s0,
+                         epoch = 1.5,
+                         hertz = 100),
+    regexp = "must be an integer"
   )
   x = AI_sampleGT3XPlus_x$AI
   stats = c(mean(x), sd(x), median(x),

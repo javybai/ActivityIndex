@@ -1,3 +1,8 @@
+# ActivityIndex 0.3.7
+
+* S3 dispatch for computeActivityIndex and GT3XPlus object now done.
+* Fixed typos
+
 # ActivityIndex 0.3.6
 
 * Example for `computeActivityIndex` added, taken from vignette.
