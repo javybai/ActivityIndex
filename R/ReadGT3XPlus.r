@@ -15,6 +15,10 @@
 #' @param filename
 #' The name of the csv file.
 #'
+#' @param epoch
+#' The epoch length (in second) of the Activity Index. Must
+#' be a positive integer. The default is \code{1}.
+#'
 #' @return The \code{ReadGT3XPlus} returns an object of \link{class} "\code{GT3XPlus}".
 #' This class of object is supported by functions \code{\link{computeActivityIndex}}.
 #' A object of class "\code{GT3XPlus}" is a list containing at least the following components:
@@ -46,7 +50,7 @@
 #' filename = system.file("extdata","sample_GT3X+.csv.gz",package="ActivityIndex")
 #' res = ReadGT3XPlus(filename)
 #'
-ReadGT3XPlus = function(filename) {
+ReadGT3XPlus = function(filename, epoch=1) {
   stopifnot(length(filename) == 1)
   if (grepl("[.]gz$", filename)) {
     filename = R.utils::gunzip(filename,
@@ -86,7 +90,7 @@ ReadGT3XPlus = function(filename) {
   # Remove incomplete row
   if (any(is.na(result$Raw[nrow(result$Raw),]))) result$Raw=result$Raw[-nrow(result$Raw),]
   # Time Stamp #
-  if (as.numeric(substr(result$Epoch,7,8))<=1)
+  if (result$Epoch=="00:00:00")
   {
     Time_Temp_idx=which(TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)%/%result$Hertz+1)
     Time_Temp_idx=Time_Temp_idx%%length(TimeScale)
@@ -95,9 +99,9 @@ ReadGT3XPlus = function(filename) {
     Time_Temp_idx[which(Time_Temp_idx==0)]=length(TimeScale)
   } else
   {
-    Time_Temp_idx=which(TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)*as.numeric(substr(result$Epoch,7,8))+1)
+    Time_Temp_idx=which(TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)*epoch+1)
     Time_Temp_idx=Time_Temp_idx%%length(TimeScale)
-    Time_Temp_idx=Time_Temp_idx[which((1:length(Time_Temp_idx))%%as.numeric(substr(result$Epoch,7,8))==1)]
+    Time_Temp_idx=Time_Temp_idx[which((1:length(Time_Temp_idx))%%epoch==1)]
     Time_Temp_idx=Time_Temp_idx[1:nrow(result$Raw)]
     Time_Temp_idx[which(Time_Temp_idx==0)]=length(TimeScale)
   }
