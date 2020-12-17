@@ -6,14 +6,12 @@ status](https://travis-ci.com/muschellij2/ActivityIndex.svg?branch=master)](http
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/muschellij2/ActivityIndex?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/ActivityIndex)
 
-ActivityIndex
-=============
+# ActivityIndex
 
 ActivityIndex is an R package which provides functions to read and
 process raw accelerometry data.
 
-Overview
---------
+## Overview
 
 ActivityIndex provides R functions to read raw accelerometry data
 collected by accelerometers. Specifically, it can directly handle
@@ -27,17 +25,15 @@ Essentially, AI describes the variability of the raw acceleration
 signals, after normalizing it using systematic noise of the signal. AI
 is an evolution of the original metric, **Activity Intensity**, proposed
 in the paper [Normalization and extraction of interpretable metrics from
-raw accelerometry
-data](http://biostatistics.oxfordjournals.org/content/15/1/102.abstract)
-by J. Bai et al (2014). The AI addresses some limitation of the original
+raw accelerometry data](https://doi.org/10.1093/biostatistics/kxt029) by
+J. Bai et al (2014). The AI addresses some limitation of the original
 Activity Intensity, and has favorable properties. More details on these
 properties and a direct comparison of AI versus other metrics such as
 Activity Count could be found in the paper [An Activity Index for Raw
 Accelerometry Data and Its Comparison with Other Activity
-Metrics](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0160644).
+Metrics](https://doi.org/10.1371/journal.pone.0160644).
 
-Package Installation
---------------------
+## Package Installation
 
 ActivityIndex software can be installed via GitHub. Users should have
 `R` installed on their computer before installing ActivityIndex.
@@ -48,29 +44,33 @@ To install ActivityIndex package via GitHub, the user must have
 installed [devtools](https://cran.r-project.org/package=devtools), which
 could be completed by using the following R command
 
-    install.packages("devtools")
+``` r
+install.packages("devtools")
+```
 
 ### Install ActivityIndex package
 
 The following R command can be used to install the latest version of
 ActivityIndex via GitHub:
 
-    devtools::install_github("javybai/ActivityIndex")
+``` r
+devtools::install_github("javybai/ActivityIndex")
+```
 
-ActivityIndex User Manual
--------------------------
+## ActivityIndex User Manual
 
 The ActivityIndex package includes a vignette to demonstrate a typical
 work flow of computing AI. The vignette can either be accessed by R
 command
 
-    browseVignettes(package="ActivityIndex")
+``` r
+browseVignettes(package="ActivityIndex")
+```
 
 and interactively browsing or going to
-<a href="http://javybai.github.io/ActivityIndex/articles/ActivityIndexIntro.html" class="uri">http://javybai.github.io/ActivityIndex/articles/ActivityIndexIntro.html</a>.
+<https://javybai.github.io/ActivityIndex/articles/ActivityIndexIntro.html>.
 
-Further Questions
------------------
+## Further Questions
 
 Please contact the author and maintainer Jiawei Bai (jbai \[at\] jhsph
 \[dot\] edu) or open an issue at GitHub.
