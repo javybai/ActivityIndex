@@ -4,10 +4,13 @@
 \alias{ReadGT3XPlus}
 \title{Read the raw tri-axial accelerometry data csv file by ActiGraph GT3X+.}
 \usage{
-ReadGT3XPlus(filename)
+ReadGT3XPlus(filename, epoch = 1)
 }
 \arguments{
 \item{filename}{The name of the csv file.}
+
+\item{epoch}{The epoch length (in second) of the Activity Index. Must
+be a positive integer. The default is \code{1}.}
 }
 \value{
 The \code{ReadGT3XPlus} returns an object of \link{class} "\code{GT3XPlus}".
