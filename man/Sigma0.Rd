@@ -27,5 +27,5 @@ res = ReadGT3XPlus(filename)
 hertz = res$Hertz
 x = res$Raw[ 1:1000, c("Time", "X", "Y", "Z")]
 res = Sigma0(x, hertz = hertz)
-testthat::expect_true(res ==  0.1843216371355338723)
+testthat::expect_equal(res, c(SD = 0.184321637135534))
 }
