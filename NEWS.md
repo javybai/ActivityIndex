@@ -2,6 +2,7 @@
 
 * S3 dispatch for computeActivityIndex and GT3XPlus object now done.
 * Fixed typos
+* Fixed noLD issues in the examples
 
 # ActivityIndex 0.3.6
 
