@@ -3,6 +3,7 @@
 #' @return NULL
 #' @param x an object used to select a method.
 #' @param ... further arguments passed to or from other methods
+#' @return No return value, called for side effects
 #' @export
 #'
 #' @examples
