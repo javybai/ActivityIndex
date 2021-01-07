@@ -13,7 +13,7 @@ vignette: >
 ```{r "setup",echo=FALSE,cache=FALSE,warning=FALSE,message=FALSE}
 library(ActivityIndex)
 library(knitr)
-options(width=52,scipen=1,digits=5)
+opt_setup=options(width=52,scipen=1,digits=5)
 opts_chunk$set(tidy=TRUE)
 ```
 
@@ -132,5 +132,7 @@ And according to the definition of AI, the minute-by-minute AI's are simply the 
 head(AI_sampleGT3XPlus_min)
 ```
 
-
+```{r "setup_cleanup",echo=FALSE,cache=FALSE,warning=FALSE,message=FALSE}
+options(opt_setup)
+```
 
