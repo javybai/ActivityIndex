@@ -90,7 +90,7 @@ ReadGT3XPlus = function(filename, epoch=1) {
   # Remove incomplete row
   if (any(is.na(result$Raw[nrow(result$Raw),]))) result$Raw=result$Raw[-nrow(result$Raw),]
   # Time Stamp #
-  if (result$Epoch=="00:00:00")
+  if ((result$Epoch=="00:00:00")||(result$Epoch=="00:00:01"))
   {
     Time_Temp_idx=which(TimeScale==result$StartTime):(which(TimeScale==result$StartTime)-1+nrow(result$Raw)%/%result$Hertz+1)
     Time_Temp_idx=Time_Temp_idx%%length(TimeScale)
